@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: boursobank-web
+    env: python
+    repo: https://github.com/kouakoucedric305-crypto/clients.boursobank
+    plan: free
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "gunicorn app:app"
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DATABASE_URL
+        fromDatabase:
+          name: boursobank-db
+          property: connectionString
+      - key: PYTHON_VERSION
+        value: 3.10.14
+
+databases:
+  - name: boursobank-db
+    plan: free
+    databaseName: boursobank_db
+    user: bourso_admin
